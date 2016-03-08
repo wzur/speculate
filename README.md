@@ -56,6 +56,15 @@ SOURCES
 SPECS
 ```
 
+## Directory Structure
+
+Speculate creates the following directories for your application:
+
+|Directory|Purpose|
+|---------|-------|
+|`/usr/lib/:projectName`|This is where your application is stored|
+|`/var/log/:projectName`|This is created for any log files that your application needs to write to|
+
 ## Configuration
 
 Speculate is configured using the `spec` property inside your existing `package.json` file.
@@ -85,6 +94,20 @@ If you have scripts that need to be executable when they're installed on your ta
     "executable": [
       "./other-scripts/my-script.js",
       "./scripts"
+    ]
+  }
+}
+```
+
+### Post Install Actions
+
+If you need to perform any actions after installing your package (such as moving files on the target server) you can specify these inline using the `post` property:
+
+```json
+{
+  "spec": {
+    "post": [
+      "mv /usr/lib/my-cool-api/rc.local /etc/rc.local"
     ]
   }
 }
