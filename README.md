@@ -89,3 +89,11 @@ If you have scripts that need to be executable when they're installed on your ta
   }
 }
 ```
+
+### Release Number
+
+By default speculate will set the RPM release number to 1, if you want to override this you can do so by using the `--release` flag:
+
+```sh
+speculate --release=7
+```
