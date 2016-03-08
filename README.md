@@ -27,6 +27,23 @@ my-cool-api
 0 directories, 2 files
 ```
 
+First run npm install to install your dependencies:
+
+```
+npm install
+```
+
+This creates the `node_modules` directory:
+
+```
+my-cool-api
+├── node_modules
+├── package.json
+└── server.js
+
+1 directory, 2 files
+```
+
 Run the `speculate` command from inside the project directory:
 
 ```
@@ -41,11 +58,12 @@ my-cool-api
 │   └── my-cool-api.tar.gz
 ├── SPECS
 │   └── my-cool-api.spec
+├── node_modules
 ├── my-cool-api.service
 ├── package.json
 └── server.js
 
-2 directories, 5 files
+3 directories, 5 files
 ```
 
 Speculate is designed to be used at build time, just before you package your application into an RPM. Because of this, we recommend adding the generated files to your `.gitignore` file:

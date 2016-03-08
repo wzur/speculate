@@ -1,0 +1,57 @@
+%define name {{name}}
+%define version 1.1.1
+%define release {{release}}
+%define buildroot %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Summary: {{name}}
+
+Group: Installation Script
+License: MIT
+Source: %{name}.tar.gz
+BuildRoot: %{buildroot}
+Requires: nodejs
+{{#requires}}
+Requires: {{.}}
+{{/requires}}
+AutoReq: no
+
+%description
+{{description}}
+
+%prep
+%setup -q -n %{name}
+
+%build
+npm rebuild
+
+%pre
+getent group {{username}} >/dev/null || groupadd -r {{username}}
+getent passwd {{username}} >/dev/null || useradd -r -g {{username}} -G {{username}} -d / -s /sbin/nologin -c "{{username}}" {{username}}
+
+%install
+mkdir -p %{buildroot}/usr/lib/{{name}}
+cp -r ./* %{buildroot}/usr/lib/{{name}}
+mkdir -p %{buildroot}/var/log/{{name}}
+
+%post
+systemctl enable /usr/lib/{{name}}/{{name}}.service
+{{#postInstallCommands}}
+{{.}}
+{{/postInstallCommands}}
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(644, {{username}}, {{username}}, 755)
+/usr/lib/{{name}}
+/var/log/{{name}}
+{{#hasExecutableFiles}}
+%defattr(755, {{username}}, {{username}}, 755)
+{{#executableFiles}}
+{{.}}
+{{/executableFiles}}
+{{/hasExecutableFiles}}
