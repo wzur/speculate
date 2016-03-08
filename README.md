@@ -90,3 +90,18 @@ If you have scripts that need to be executable when they're installed on your ta
   }
 }
 ```
+
+### Environment
+
+By default, the systemd service will start your application with the `NODE_ENV=production` environment variable. If you need to override this or add additional environment variables, use the `environment` property:
+
+```json
+{
+  "spec": {
+    "environment": {
+      "NODE_ENV": "production",
+      "MY_VAR": "foo"
+    }
+  }
+}
+```
