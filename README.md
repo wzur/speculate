@@ -69,8 +69,7 @@ To add a dependency to the generated spec file, list the package dependencies in
   "spec": {
     "requires": [
       "vim",
-      "screen",
-
+      "screen"
     ]
   }
 }
