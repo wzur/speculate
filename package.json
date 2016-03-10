@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "coverage": "istanbul cover _mocha -- -R dot"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "eslint": "^2.3.0",
     "hogan.js": "^3.0.2",
     "lodash": "^4.6.1",
+    "rimraf": "^2.5.2",
     "tar-fs": "^1.11.1",
     "tar.gz": "^1.0.3"
   },
@@ -47,6 +49,8 @@
     }
   },
   "devDependencies": {
-    "mocha": "^2.4.5"
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
   }
 }
