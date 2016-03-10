@@ -1,0 +1,17 @@
+#! /usr/bin/env node
+
+var path = require('path');
+var validator = require('../lib/validator');
+var generate = require('../lib/generate');
+var cwd = process.cwd();
+
+var isValid = validator(cwd);
+
+if (!isValid) {
+  console.error('Please run speculate from within a valid Node.js project');
+  process.exit(1);
+}
+
+var pkg = require(path.resolve(cwd, './package.json'));
+
+generate(cwd, pkg);

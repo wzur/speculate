@@ -25,10 +25,13 @@
     "url": "https://github.com/bbc/speculate/issues"
   },
   "homepage": "https://github.com/bbc/speculate#readme",
+  "bin": {
+    "speculate": "./bin/speculate.js"
+  },
   "dependencies": {
     "eslint": "^2.3.0",
-    "lodash": "^4.6.1",
-    "mocha": "^2.4.5"
+    "hogan.js": "^3.0.2",
+    "lodash": "^4.6.1"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -37,7 +40,11 @@
       "mocha": true
     },
     "rules": {
-      "semi": 2
+      "semi": 2,
+      "no-console": 0
     }
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
   }
 }
