@@ -3,6 +3,7 @@
 var path = require('path');
 var validator = require('../lib/validator');
 var generate = require('../lib/generate');
+var clean = require('../lib/clean');
 var cwd = process.cwd();
 
 var isValid = validator(cwd);
@@ -14,6 +15,7 @@ if (!isValid) {
 
 var pkg = require(path.resolve(cwd, './package.json'));
 
+clean(cwd, pkg);
 generate(cwd, pkg, function (err) {
   console.log('hai guiz');
 
