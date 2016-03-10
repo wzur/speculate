@@ -1,48 +1,72 @@
-var generate = require('../lib/generate');
 var sinon = require('sinon');
 var fs = require('fs');
+var assert = require('assert');
+var generate = require('../lib/generate');
+var archiver = require('../lib/archiver');
 
+var pkg = require('./fixtures/my-cool-api');
 var sandbox = sinon.sandbox.create();
 
 describe('generate', function () {
   beforeEach(function () {
     sandbox.stub(fs, 'writeFileSync');
     sandbox.stub(fs, 'mkdirSync');
+    sandbox.stub(archiver, 'compress').yields();
   });
 
   afterEach(function () {
     sandbox.restore();
   });
 
-  it('creates the service file', function () {
-    var pkg = require('./fixtures/my-cool-api');
-
-    generate('/path/to/project', pkg);
-
-    sinon.assert.calledWith(
-      fs.writeFileSync,
-      '/path/to/project/my-cool-api.service',
-      sinon.match('SyslogIdentifier=my-cool-api')
-    );
+  it('creates the service file', function (done) {
+    generate('/path/to/project', pkg, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(
+        fs.writeFileSync,
+        '/path/to/project/my-cool-api.service',
+        sinon.match('SyslogIdentifier=my-cool-api')
+      );
+      done();
+    });
   });
 
-  it('creates directory for SPECS', function () {
-    var pkg = require('./fixtures/my-cool-api');
-
-    generate('/path/to/project', pkg);
-
-    sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SPECS');
+  it('creates directory for SPECS', function (done) {
+    generate('/path/to/project', pkg, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SPECS');
+      done();
+    });
   });
 
-  it('creates the spec file', function () {
-    var pkg = require('./fixtures/my-cool-api');
+  it('creates the spec file', function (done) {
+    generate('/path/to/project', pkg, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(
+        fs.writeFileSync,
+        '/path/to/project/SPECS/my-cool-api.spec',
+        sinon.match('%define name my-cool-api')
+      );
+      done();
+    });
+  });
 
-    generate('/path/to/project', pkg);
+  it('creates directory for SOURCES', function (done) {
+    generate('/path/to/project', pkg, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SOURCES');
+      done();
+    });
+  });
 
-    sinon.assert.calledWith(
-      fs.writeFileSync,
-      '/path/to/project/SPECS/my-cool-api.spec',
-      sinon.match('%define name my-cool-api')
-    );
+  it('creates the sources archive', function (done) {
+    generate('/path/to/project', pkg, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(
+        archiver.compress,
+        '/path/to/project',
+        '/path/to/project/SOURCES/my-cool-api.tar.gz'
+      );
+      done();
+    });
   });
 });

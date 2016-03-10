@@ -14,4 +14,12 @@ if (!isValid) {
 
 var pkg = require(path.resolve(cwd, './package.json'));
 
-generate(cwd, pkg);
+generate(cwd, pkg, function (err) {
+  console.log('hai guiz');
+
+  if (err) {
+    throw err;
+  }
+
+  process.exit(0);
+});
