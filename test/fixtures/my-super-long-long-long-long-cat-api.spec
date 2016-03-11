@@ -19,7 +19,7 @@ AutoReq: no
 My Super Long Long Long Long Cat API
 
 %prep
-%setup -q -n %{name}
+%setup -q -c -n %{name}
 
 %build
 npm rebuild
