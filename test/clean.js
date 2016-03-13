@@ -1,5 +1,4 @@
 var sinon = require('sinon');
-var fs = require('fs');
 var rimraf = require('rimraf');
 var clean = require('../lib/clean');
 
@@ -9,7 +8,6 @@ var sandbox = sinon.sandbox.create();
 describe('clean', function () {
   beforeEach(function () {
     sandbox.stub(rimraf, 'sync');
-    sandbox.stub(fs, 'unlinkSync');
   });
 
   afterEach(function () {
@@ -19,7 +17,7 @@ describe('clean', function () {
   it('removes the existing service file', function () {
     clean('/path/to/project', pkg);
     sinon.assert.calledWith(
-      fs.unlinkSync,
+      rimraf.sync,
       '/path/to/project/my-cool-api.service'
     );
   });
