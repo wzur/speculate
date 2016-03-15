@@ -1,11 +1,14 @@
 #! /usr/bin/env node
 
 var path = require('path');
+var program = require('commander');
+
 var validator = require('../lib/validator');
 var generate = require('../lib/generate');
 var clean = require('../lib/clean');
-var cwd = process.cwd();
+var commandPkg = require('../package');
 
+var cwd = process.cwd();
 var isValid = validator(cwd);
 
 if (!isValid) {
@@ -13,15 +16,24 @@ if (!isValid) {
   process.exit(1);
 }
 
-var pkg = require(path.resolve(cwd, './package.json'));
+var projectPkg = require(path.resolve(cwd, './package.json'));
+var name = projectPkg.name;
 
-clean(cwd, pkg);
-generate(cwd, pkg, function (err) {
-  console.log('hai guiz');
+program
+  .version(commandPkg.version)
+  .option('-r --release <release>', 'Specify release number of package')
+  .parse(process.argv);
 
+clean(cwd, projectPkg);
+generate(cwd, projectPkg, program.release, function (err) {
   if (err) {
-    throw err;
+    console.error('Error:', err.message);
+    process.exit(1);
   }
 
+  console.log('Created ./SPECS/%s.spec', name);
+  console.log('Created ./SOURCES/%s.tar.gz', name);
+  console.log('Created ./%s.service', name);
+  console.log('Successfully speculated! 😸');
   process.exit(0);
 });

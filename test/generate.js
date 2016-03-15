@@ -19,7 +19,7 @@ describe('generate', function () {
   });
 
   it('creates the service file', function (done) {
-    generate('/path/to/project', pkg, function (err) {
+    generate('/path/to/project', pkg, null, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(
         fs.writeFileSync,
@@ -31,7 +31,7 @@ describe('generate', function () {
   });
 
   it('creates directory for SPECS', function (done) {
-    generate('/path/to/project', pkg, function (err) {
+    generate('/path/to/project', pkg, null, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SPECS');
       done();
@@ -39,7 +39,7 @@ describe('generate', function () {
   });
 
   it('creates the spec file', function (done) {
-    generate('/path/to/project', pkg, function (err) {
+    generate('/path/to/project', pkg, null, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(
         fs.writeFileSync,
@@ -51,7 +51,7 @@ describe('generate', function () {
   });
 
   it('creates directory for SOURCES', function (done) {
-    generate('/path/to/project', pkg, function (err) {
+    generate('/path/to/project', pkg, null, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SOURCES');
       done();
@@ -59,12 +59,24 @@ describe('generate', function () {
   });
 
   it('creates the sources archive', function (done) {
-    generate('/path/to/project', pkg, function (err) {
+    generate('/path/to/project', pkg, null, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(
         archiver.compress,
         '/path/to/project',
         '/path/to/project/SOURCES/my-cool-api.tar.gz'
+      );
+      done();
+    });
+  });
+
+  it('creates the spec file with the correct release number', function (done) {
+    generate('/path/to/project', pkg, 7, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(
+        fs.writeFileSync,
+        '/path/to/project/SPECS/my-cool-api.spec',
+        sinon.match('%define release 7')
       );
       done();
     });
