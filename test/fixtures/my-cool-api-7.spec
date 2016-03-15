@@ -13,6 +13,7 @@ License: MIT
 Source: %{name}.tar.gz
 BuildRoot: %{buildroot}
 Requires: nodejs
+BuildRequires: npm
 AutoReq: no
 
 %description

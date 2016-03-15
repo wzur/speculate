@@ -15,6 +15,7 @@ BuildRoot: %{buildroot}
 Requires: nodejs
 Requires: vim
 Requires: screen
+BuildRequires: npm
 AutoReq: no
 
 %description
