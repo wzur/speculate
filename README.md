@@ -74,7 +74,46 @@ SOURCES
 SPECS
 ```
 
-## Directory Structure
+### Install your dependencies _first_
+
+Speculate assumes that you've _already installed your npm dependencies_ when it is run. This means that you don't need to worry about running `npm install` inside a clean RPM-building environment like _mock_.
+
+The generated spec file instructs your RPM building tool to run [`npm rebuild`](https://docs.npmjs.com/cli/rebuild) as part of the build process. This ensures that any native modules are rebuilt for your target environment, even if they were originally installed on a different platform.
+
+A typical speculate build looks like this:
+
+```bash
+npm install
+npm test
+speculate
+# build the RPM (using rpmbuild, mock etc.)
+```
+
+### Local installation
+
+To avoid the need to install speculate globally, we recommend installing it _locally_ and creating an [npm script](https://docs.npmjs.com/misc/scripts) in your `package.json` file:
+
+```
+npm install --save-dev speculate
+```
+
+```json
+{
+  "scripts": {
+    "spec": "speculate"
+  }
+}
+```
+
+You can then run `npm run spec` to generate your spec file in an environment where speculate isn't installed globally (like your CI server.)
+
+### Node versions
+
+The spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.
+
+We **strongly recommend** that you use the [Nodesource binary distributions](https://github.com/nodesource/distributions) to install a modern version of Node.js for both your RPM building environment and your target server. Follow the setup instructions for [Enterprise Linux](https://github.com/nodesource/distributions#rpm) and then run `yum install nodejs`.
+
+### Directory Structure
 
 Speculate creates the following directories for your application:
 
