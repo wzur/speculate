@@ -1,5 +1,7 @@
 # speculate
 
+[![Build Status](https://travis-ci.org/bbc/speculate.svg)](https://travis-ci.org/bbc/speculate)
+
 > Automatically generates an RPM Spec file for your Node.js project
 
 ## Installation
