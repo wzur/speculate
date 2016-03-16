@@ -107,6 +107,18 @@ npm install --save-dev speculate
 
 You can then run `npm run spec` to generate your spec file in an environment where speculate isn't installed globally (like your CI server.)
 
+### `npm start` script
+
+The systemd service file that Speculate generates uses the `npm start` script to start your application. Make sure that you've defined this script in your `package.json` file.
+
+```json
+{
+  "scripts": {
+    "start": "node server.js"
+  }
+}
+```
+
 ### Node versions
 
 The spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.
