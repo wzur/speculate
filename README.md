@@ -1,6 +1,6 @@
 # speculate
 
-[![Build Status](https://travis-ci.org/bbc/speculate.svg)](https://travis-ci.org/bbc/speculate)
+[![Build Status](https://travis-ci.org/bbc/speculate.svg)](https://travis-ci.org/bbc/speculate) [![Code Climate](https://codeclimate.com/github/bbc/speculate/badges/gpa.svg)](https://codeclimate.com/github/bbc/speculate) [![Test Coverage](https://codeclimate.com/github/bbc/speculate/badges/coverage.svg)](https://codeclimate.com/github/bbc/speculate/coverage)
 
 > Automatically generates an RPM Spec file for your Node.js project
 
