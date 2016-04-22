@@ -44,6 +44,13 @@ describe('spec', function () {
     assert.equal(spec, expected);
   });
 
+  it('includes post-install actions from the spec.post property in package.json', function () {
+    var pkg = require('./fixtures/my-cool-api-with-post');
+    var expected = loadFixture('my-cool-api-with-post.spec');
+    var spec = createSpecFile(pkg);
+    assert.equal(spec, expected);
+  });
+
   it('sets the license from the package.json', function () {
     var pkg = require('./fixtures/my-cool-api-with-diff-licence');
     var expected = loadFixture('my-cool-api-with-diff-licence.spec');
