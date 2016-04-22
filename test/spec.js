@@ -44,7 +44,7 @@ describe('spec', function () {
     assert.equal(spec, expected);
   });
 
-  it('set the license from the package.json', function () {
+  it('sets the license from the package.json', function () {
     var pkg = require('./fixtures/my-cool-api-with-diff-licence');
     var expected = loadFixture('my-cool-api-with-diff-licence.spec');
     var spec = createSpecFile(pkg);
