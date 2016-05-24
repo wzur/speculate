@@ -34,6 +34,5 @@ generate(cwd, projectPkg, program.release, function (err) {
   console.log('Created ./SPECS/%s.spec', name);
   console.log('Created ./SOURCES/%s.tar.gz', name);
   console.log('Created ./%s.service', name);
-  console.log('Successfully speculated! 😸');
   process.exit(0);
 });
