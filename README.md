@@ -109,6 +109,31 @@ npm install --save-dev speculate
 
 You can then run `npm run spec` to generate your spec file in an environment where speculate isn't installed globally (like your CI server.)
 
+### Pruning dependencies
+
+To minimise the final RPM size, it's a good idea to [prune](https://docs.npmjs.com/cli/prune) your development dependencies so that they're not shipped with your production code.
+
+You can do this before you run speculate:
+
+```bash
+npm install
+npm test
+npm prune --production
+speculate
+# build RPM
+```
+
+If you're using speculate [as a local module](#local-module) the prune step will uninstall speculate itself. To get around this, be sure to reinstall speculate after you run `npm prune`. A good way to do this is with an npm script:
+
+```json
+{
+  "scripts": {
+    "prespec": "npm prune --production && npm install speculate",
+    "spec": "speculate"
+  }
+}
+```
+
 ### `npm start` script
 
 The systemd service file that Speculate generates uses the `npm start` script to start your application. Make sure that you've defined this script in your `package.json` file.
