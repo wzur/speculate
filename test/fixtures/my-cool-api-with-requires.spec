@@ -16,7 +16,7 @@ Requires: nodejs
 Requires: vim
 Requires: screen
 BuildRequires: nodejs
-AutoReq: no
+AutoReqProv: no
 
 %description
 My Cool API
