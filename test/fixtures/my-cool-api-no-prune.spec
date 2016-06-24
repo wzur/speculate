@@ -1,6 +1,6 @@
 %define name my-cool-api
 %define version 1.1.1
-%define release 7
+%define release 1
 %define buildroot %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 Name: %{name}
@@ -23,7 +23,6 @@ My Cool API
 %setup -q -c -n %{name}
 
 %build
-npm prune --production
 npm rebuild
 
 %pre

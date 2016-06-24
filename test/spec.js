@@ -19,6 +19,14 @@ describe('spec', function () {
     assert.equal(spec, expected);
   });
 
+  it('removes the prune step when specified', function () {
+    var pkg = require('./fixtures/my-cool-api-no-prune');
+    var expected = loadFixture('my-cool-api-no-prune.spec');
+    var spec = createSpecFile(pkg);
+
+    assert.equal(spec, expected);
+  });
+
   it('sets the release number when specified', function () {
     var releaseNumber = 7;
     var pkg = require('./fixtures/my-cool-api');

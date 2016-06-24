@@ -23,6 +23,7 @@ My Super Long Long Long Long Cat API
 %setup -q -c -n %{name}
 
 %build
+npm prune --production
 npm rebuild
 
 %pre
