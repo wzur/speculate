@@ -26,6 +26,9 @@ AutoReq: no
 %setup -q -c -n %{name}
 
 %build
+{{#prune}}
+npm prune --production
+{{/prune}}
 npm rebuild
 
 %pre
