@@ -14,7 +14,7 @@ Source: %{name}.tar.gz
 BuildRoot: %{buildroot}
 Requires: nodejs
 BuildRequires: nodejs
-AutoReq: no
+AutoReqProv: no
 
 %description
 My Super Long Long Long Long Cat API
