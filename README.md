@@ -111,15 +111,18 @@ You can then run `npm run spec` to generate your spec file in an environment whe
 
 ### Pruning dependencies
 
-To minimise the final RPM size, it's a good idea to [prune](https://docs.npmjs.com/cli/prune) your development dependencies so that they're not shipped with your production code.
+To minimise the final RPM size, your development dependencies (dependencies added with the --save-dev flag) are automatically [pruned](https://docs.npmjs.com/cli/prune) so that they're not shipped with your production code.
 
-You can do this before you run speculate:
+If for some reason you need to package your dev dependencies with your production code you can explicity tell speculate not to prune by adding the following to your package.json:
 
-```bash
-npm install
-npm test
-npm prune --production
-speculate
+```json
+{
+  "spec": {
+    "prune": false  
+  }
+}
+```
+
 # build RPM
 ```
 

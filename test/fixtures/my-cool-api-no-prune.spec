@@ -9,14 +9,12 @@ Release: %{release}
 Summary: my-cool-api
 
 Group: Installation Script
-License: ICS
+License: MIT
 Source: %{name}.tar.gz
 BuildRoot: %{buildroot}
 Requires: nodejs
-Requires: vim
-Requires: screen
 BuildRequires: nodejs
-AutoReqProv: no
+AutoReq: no
 
 %description
 My Cool API
@@ -25,7 +23,6 @@ My Cool API
 %setup -q -c -n %{name}
 
 %build
-npm prune --production
 npm rebuild
 
 %pre
