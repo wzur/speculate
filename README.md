@@ -123,20 +123,6 @@ If for some reason you need to package your dev dependencies with your productio
 }
 ```
 
-# build RPM
-```
-
-If you're using speculate [as a local module](#local-module) the prune step will uninstall speculate itself. To get around this, be sure to reinstall speculate after you run `npm prune`. A good way to do this is with an npm script:
-
-```json
-{
-  "scripts": {
-    "prespec": "npm prune --production && npm install speculate",
-    "spec": "speculate"
-  }
-}
-```
-
 ### `npm start` script
 
 The systemd service file that Speculate generates uses the `npm start` script to start your application. Make sure that you've defined this script in your `package.json` file.
