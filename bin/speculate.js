@@ -22,10 +22,11 @@ var name = projectPkg.name;
 program
   .version(commandPkg.version)
   .option('-r --release <release>', 'Specify release number of package')
+  .option('-n --name <name>', 'Specify custom name for package')
   .parse(process.argv);
 
 clean(cwd, projectPkg);
-generate(cwd, projectPkg, program.release, function (err) {
+generate(cwd, projectPkg, program.release, program.name, function (err) {
   if (err) {
     console.error('Error:', err.message);
     process.exit(1);
