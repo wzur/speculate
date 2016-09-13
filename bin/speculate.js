@@ -17,16 +17,17 @@ if (!isValid) {
 }
 
 var projectPkg = require(path.resolve(cwd, './package.json'));
-var name = projectPkg.name;
 
 program
   .version(commandPkg.version)
   .option('-r --release <release>', 'Specify release number of package')
-  .option('-n --name <name>', 'Specify custom name for package')
+  .option('-c --custom-name <custom-name>', 'Specify custom name for package')
   .parse(process.argv);
 
+var name = program.customName || projectPkg.name;
+
 clean(cwd, projectPkg);
-generate(cwd, projectPkg, program.release, program.name, function (err) {
+generate(cwd, projectPkg, program.release, program.customName, function (err) {
   if (err) {
     console.error('Error:', err.message);
     process.exit(1);
