@@ -17,22 +17,25 @@ if (!isValid) {
 }
 
 var projectPkg = require(path.resolve(cwd, './package.json'));
-var name = projectPkg.name;
 
 program
   .version(commandPkg.version)
   .option('-r --release <release>', 'Specify release number of package')
+  .option('-n --name <name>', 'Specify custom name for package')
   .parse(process.argv);
 
+// Commander has a magic property called name when not overriden by a parameter
+var name = program.name instanceof Function ? undefined : program.name;
+
 clean(cwd, projectPkg);
-generate(cwd, projectPkg, program.release, function (err) {
+generate(cwd, projectPkg, program.release, name, function (err, generated) {
   if (err) {
     console.error('Error:', err.message);
     process.exit(1);
   }
 
-  console.log('Created ./SPECS/%s.spec', name);
-  console.log('Created ./SOURCES/%s.tar.gz', name);
-  console.log('Created ./%s.service', name);
+  generated.forEach(function (file) {
+    console.log('Created ./%s', file);
+  });
   process.exit(0);
 });

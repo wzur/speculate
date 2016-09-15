@@ -205,3 +205,13 @@ By default speculate will set the RPM release number to 1, if you want to overri
 ```sh
 speculate --release=7
 ```
+
+### Custom Name
+
+By default speculate will set the name from `package.json`, if you want to override this you can do so by using the `--name` flag:
+
+```sh
+speculate --name=my-cool-api
+```
+
+This is useful if you are using private NPM packages which start with an `@`.
