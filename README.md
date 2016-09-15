@@ -208,10 +208,10 @@ speculate --release=7
 
 ### Custom Name
 
-By default speculate will set the name from `package.json`, if you want to override this you can do so by using the `--custom-name` flag:
+By default speculate will set the name from `package.json`, if you want to override this you can do so by using the `--name` flag:
 
 ```sh
-speculate --custom-name=my-cool-api
+speculate --name=my-cool-api
 ```
 
 This is useful if you are using private NPM packages which start with an `@`.

@@ -117,4 +117,13 @@ describe('generate', function () {
       done();
     });
   });
+
+  it('returns an array of files created', function (done) {
+    var filesExpected = ['SPECS/my-cool-api.spec', 'SOURCES/my-cool-api.tar.gz', 'my-cool-api.service'];
+    generate('/path/to/project', pkg, null, null, function (err, files) {
+      assert.ifError(err);
+      assert.deepEqual(files, filesExpected);
+      done();
+    });
+  });
 });
