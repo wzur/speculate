@@ -11,6 +11,9 @@ StandardError=syslog
 SyslogIdentifier={{name}}
 User={{username}}
 Group={{username}}
+{{#environment}}
+Environment={{key}}={{value}}
+{{/environment}}
 
 [Install]
 WantedBy=multi-user.target

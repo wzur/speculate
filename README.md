@@ -198,6 +198,21 @@ If you need to perform any actions after installing your package (such as moving
 }
 ```
 
+### Environment variable
+
+If you need to specify environment variables during startup (NODE_ENV for example) you can specify these inline using the spec.environment property:
+
+```json
+{
+  "spec": {
+    "environment": {
+      "NODE_ENV": "production",
+      "NODE_INSTANCE": "%i"
+    }
+  }
+}
+```
+
 ### Release Number
 
 By default speculate will set the RPM release number to 1, if you want to override this you can do so by using the `--release` flag:
