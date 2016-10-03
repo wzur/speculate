@@ -18,4 +18,12 @@ describe('service', function () {
 
     assert.equal(service, expected);
   });
+
+  it('includes environment variables from the spec.environment property in package.json', function() {
+    var pkg = require('./fixtures/my-cool-api-environment');
+    var expected = loadFixture('my-cool-api-environment.service');
+    var service = createServiceFile(pkg);
+
+    assert.equal(service, expected);
+  });
 });
