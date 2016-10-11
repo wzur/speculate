@@ -113,7 +113,7 @@ You can then run `npm run spec` to generate your spec file in an environment whe
 
 To minimise the final RPM size, your development dependencies (dependencies added with the --save-dev flag) are automatically [pruned](https://docs.npmjs.com/cli/prune) so that they're not shipped with your production code.
 
-If for some reason you need to package your dev dependencies with your production code you can explicity tell speculate not to prune by adding the following to your package.json:
+If for some reason you need to package your dev dependencies with your production code you can explicity tell speculate not to prune by adding the following to your `package.json`:
 
 ```json
 {
@@ -137,9 +137,20 @@ The systemd service file that Speculate generates uses the `npm start` script to
 
 ### Node versions
 
-The spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.
+By default, the spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.
 
 We **strongly recommend** that you use the [Nodesource binary distributions](https://github.com/nodesource/distributions) to install a modern version of Node.js for both your RPM building environment and your target server. Follow the setup instructions for [Enterprise Linux](https://github.com/nodesource/distributions#rpm) and then run `yum install nodejs`.
+
+If you're using multiple node repositories or a repository with multiple versions of node, you can specify an RPM version requirement with the `nodeVersion` property in your `package.json` file:
+
+```json
+{
+  "spec": {
+    "nodeVersion": "< 5.0.0"
+  }
+}
+```
+The `nodeVersion` property must conform to the [RPM version syntax](http://www.rpm.org/max-rpm/s1-rpm-depend-manual-dependencies.html#S3-RPM-DEPEND-VERSION-REQUIREMENTS)
 
 ### Directory Structure
 
