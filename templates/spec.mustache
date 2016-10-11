@@ -12,11 +12,11 @@ Group: Installation Script
 License: {{license}}
 Source: %{name}.tar.gz
 BuildRoot: %{buildroot}
-Requires: nodejs
+Requires: nodejs{{#nodeVersion}} {{{nodeVersion}}}{{/nodeVersion}}
 {{#requires}}
 Requires: {{.}}
 {{/requires}}
-BuildRequires: nodejs
+BuildRequires: nodejs{{#nodeVersion}} {{{nodeVersion}}}{{/nodeVersion}}
 AutoReqProv: no
 
 %description
