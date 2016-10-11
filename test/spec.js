@@ -36,6 +36,14 @@ describe('spec', function () {
     assert.equal(spec, expected);
   });
 
+  it('requires a particular node version when specified', function () {
+    var pkg = require('./fixtures/my-cool-api-with-node-version');
+    var expected = loadFixture('my-cool-api-with-node-version.spec');
+    var spec = createSpecFile(pkg);
+
+    assert.equal(spec, expected);
+  });
+
   it('adds all of the required packages from the spec.requires property in package.json', function () {
     var pkg = require('./fixtures/my-cool-api-with-requires');
     var expected = loadFixture('my-cool-api-with-requires.spec');
