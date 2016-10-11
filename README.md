@@ -118,7 +118,7 @@ If for some reason you need to package your dev dependencies with your productio
 ```json
 {
   "spec": {
-    "prune": false  
+    "prune": false
   }
 }
 ```
@@ -140,6 +140,10 @@ The systemd service file that Speculate generates uses the `npm start` script to
 The spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.
 
 We **strongly recommend** that you use the [Nodesource binary distributions](https://github.com/nodesource/distributions) to install a modern version of Node.js for both your RPM building environment and your target server. Follow the setup instructions for [Enterprise Linux](https://github.com/nodesource/distributions#rpm) and then run `yum install nodejs`.
+
+### Build Requirements
+
+In order to rebuild native node.js modules using node-gyp, speculate adds python as a build requirement.
 
 ### Directory Structure
 

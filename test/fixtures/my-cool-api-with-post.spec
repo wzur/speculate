@@ -14,6 +14,7 @@ Source: %{name}.tar.gz
 BuildRoot: %{buildroot}
 Requires: nodejs
 BuildRequires: nodejs
+BuildRequires: python
 AutoReqProv: no
 
 %description
