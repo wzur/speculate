@@ -1,6 +1,6 @@
 {
   "name": "speculate",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Automatically generates an RPM Spec file for your Node.js project",
   "main": "index.js",
   "scripts": {
