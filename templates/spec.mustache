@@ -17,6 +17,9 @@ Requires: nodejs{{#nodeVersion}} {{{nodeVersion}}}{{/nodeVersion}}
 Requires: {{.}}
 {{/requires}}
 BuildRequires: nodejs{{#nodeVersion}} {{{nodeVersion}}}{{/nodeVersion}}
+{{#buildRequires}}
+BuildRequires: {{.}}
+{{/buildRequires}}
 AutoReqProv: no
 
 %description
