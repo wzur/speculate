@@ -180,6 +180,18 @@ To add a dependency to the generated spec file, list the package dependencies in
 }
 ```
 
+If you have any build dependencies (such as `python` for `node-gyp`), instead of having them available outside the build environment you can instead add them to the `buildRequires` array:
+
+```json
+{
+  "spec": {
+    "buildRequires": [
+      "python"
+    ]
+  }
+}
+```
+
 ### Executables
 
 If you have scripts that need to be executable when they're installed on your target server, add them to the `executable` array. You can list both files and entire directories:

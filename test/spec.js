@@ -52,6 +52,14 @@ describe('spec', function () {
     assert.equal(spec, expected);
   });
 
+  it('adds all of the required packages from the spec.buildRequires property in package.json', function () {
+    var pkg = require('./fixtures/my-cool-api-with-buildrequires');
+    var expected = loadFixture('my-cool-api-with-buildrequires.spec');
+    var spec = createSpecFile(pkg);
+
+    assert.equal(spec, expected);
+  });
+
   it('adds all of the executable files from the spec.executable property in package.json', function () {
     var pkg = require('./fixtures/my-cool-api-with-executable');
     var expected = loadFixture('my-cool-api-with-executable.spec');
