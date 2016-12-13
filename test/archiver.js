@@ -58,6 +58,18 @@ describe('archiver', function () {
       assert.equal(ignore('SOURCES'), true);
       assert.equal(ignore('RPMS'), true);
       assert.equal(ignore('SRPMS'), true);
+      assert.equal(ignore('.git/objects/00'), true);
+      done();
+    });
+
+    writeStream.emit('close');
+  });
+
+  it('does not ignore all artifacts because of full path name', function (done) {
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', function (err) {
+      assert.ifError(err);
+      var ignore = tar.pack.getCall(0).args[1].ignore;
+      assert.equal(ignore('/tmp/SOURCES/cake/real_file_here'), false);
       done();
     });
 
