@@ -137,7 +137,7 @@ The systemd service file that Speculate generates uses the `npm start` script to
 
 ### Including only certain files
 
-Similar to `npm`, if you specify a `files` directive in your `package.json` then `speculate` will only include those files or directories in the source tarball:
+Similar to `npm`, if you specify a `files` directive in your `package.json` then `speculate` will only include those files or directories plus `package.json` and `node_modules` in the source tarball:
 
 ```json
 {
