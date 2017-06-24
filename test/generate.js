@@ -5,9 +5,10 @@ var generate = require('../lib/generate');
 var archiver = require('../lib/archiver');
 
 var pkg = require('./fixtures/my-cool-api');
+var pkgWithWhitelist = require('./fixtures/my-cool-api-with-whitelist');
 var sandbox = sinon.sandbox.create();
 
-describe('generate', function () {
+describe.only('generate', function () {
   beforeEach(function () {
     sandbox.stub(fs, 'writeFileSync');
     sandbox.stub(fs, 'mkdirSync');
@@ -64,7 +65,8 @@ describe('generate', function () {
       sinon.assert.calledWith(
         archiver.compress,
         '/path/to/project',
-        '/path/to/project/SOURCES/my-cool-api.tar.gz'
+        '/path/to/project/SOURCES/my-cool-api.tar.gz',
+        {}
       );
       done();
     });
@@ -112,7 +114,28 @@ describe('generate', function () {
       sinon.assert.calledWith(
         archiver.compress,
         '/path/to/project',
-        '/path/to/project/SOURCES/penguin.tar.gz'
+        '/path/to/project/SOURCES/penguin.tar.gz',
+        {}
+      );
+      done();
+    });
+  });
+
+  it('passes files and main values from the package.json to archiver', function (done) {
+    generate('/path/to/project', pkgWithWhitelist, null, null, function (err) {
+      assert.ifError(err);
+      sinon.assert.calledWith(
+        archiver.compress,
+        '/path/to/project',
+        '/path/to/project/SOURCES/my-cool-api.tar.gz',
+        {
+          main: 'server.js',
+          files: [
+            'lib',
+            'routes',
+            'index.js'
+          ]
+        }
       );
       done();
     });

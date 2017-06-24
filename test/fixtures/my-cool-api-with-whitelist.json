@@ -5,6 +5,12 @@
     "start": "node index.js"
   },
   "description": "My Cool API",
+  "main": "server.js",
+  "files": [
+    "lib",
+    "routes",
+    "index.js"
+  ],
   "author": "bob@example.com",
   "license": "MIT"
 }
