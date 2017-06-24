@@ -125,10 +125,10 @@ describe('archiver', function () {
         entries: [
           'package.json',
           'node_modules',
+          'server.js',
           'lib',
           'routes',
-          'index.js',
-          'server.js'
+          'index.js'
         ]
       }));
       done();
