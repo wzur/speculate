@@ -135,6 +135,33 @@ The systemd service file that Speculate generates uses the `npm start` script to
 }
 ```
 
+### Including only certain files
+
+Similar to `npm`, if you specify a `files` directive in your `package.json` then `speculate` will only include those files or directories in the source tarball:
+
+```json
+{
+  "files": [
+    "lib",
+    "routes",
+    "index.js"
+  ]
+}
+```
+
+Alongside this, the `main` attribute is also included in the `files` listing, although the service is still started using `npm start`:
+
+```json
+{
+  "main": "server.js",
+  "files": [
+    "lib",
+    "routes",
+    "index.js"
+  ]
+}
+```
+
 ### Node versions
 
 By default, the spec file that speculate generates _isn't_ tied to a particular Node version. It simply requires the `nodejs` package. It's up to you to make the package available when you install the RPM using `yum`.

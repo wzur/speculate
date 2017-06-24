@@ -9,7 +9,7 @@ var sandbox = sinon.sandbox.create();
 
 var archiver = require('../lib/archiver');
 
-describe('archiver', function () {
+describe.only('archiver', function () {
   var writeStream;
   var readStream;
   var transformStream;
@@ -32,7 +32,7 @@ describe('archiver', function () {
   });
 
   it('creates a tar.gz archive', function (done) {
-    archiver.compress('tmp', 'tmp.tar.gz', function (err) {
+    archiver.compress('tmp', 'tmp.tar.gz', {}, function (err) {
       assert.ifError(err);
       done();
     });
@@ -41,7 +41,7 @@ describe('archiver', function () {
   });
 
   it('returns an error when the archive cannot be written', function (done) {
-    archiver.compress('tmp', 'tmp.tar.gz', function (err) {
+    archiver.compress('tmp', 'tmp.tar.gz', {}, function (err) {
       assert.ok(err);
       done();
     });
@@ -50,7 +50,7 @@ describe('archiver', function () {
   });
 
   it('ignores build artifacts', function (done) {
-    archiver.compress('tmp', 'tmp.tar.gz', function (err) {
+    archiver.compress('tmp', 'tmp.tar.gz', {}, function (err) {
       assert.ifError(err);
       sinon.assert.calledWith(tar.pack, 'tmp', sinon.match.object);
       var ignore = tar.pack.getCall(0).args[1].ignore;
@@ -66,10 +66,89 @@ describe('archiver', function () {
   });
 
   it('does not ignore all artifacts because of full path name', function (done) {
-    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', function (err) {
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', {}, function (err) {
       assert.ifError(err);
       var ignore = tar.pack.getCall(0).args[1].ignore;
       assert.equal(ignore('/tmp/SOURCES/cake/real_file_here'), false);
+      done();
+    });
+
+    writeStream.emit('close');
+  });
+
+  it('archives files on a whitelist if specified alongside required files', function (done) {
+    var files = [
+      'lib',
+      'routes',
+      'index.js'
+    ];
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', { files: files }, function (err) {
+      assert.ifError(err);
+      sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+        entries: [
+          'package.json',
+          'node_modules',
+          'lib',
+          'routes',
+          'index.js'
+        ]
+      }));
+      done();
+    });
+
+    writeStream.emit('close');
+  });
+
+  it('does not include whitelist if none specified', function (done) {
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', {}, function (err) {
+      assert.ifError(err);
+      sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+        entries: undefined
+      }));
+      done();
+    });
+
+    writeStream.emit('close');
+  });
+
+  it('adds the "main" file to the archive alongside "files" if specified', function (done) {
+    var main = 'server.js';
+    var files = [
+      'lib',
+      'routes',
+      'index.js'
+    ];
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', {  main: main, files: files }, function (err) {
+      assert.ifError(err);
+      sandbox.assert.neverCalledWith(tar.pack, sinon.match({ ignore: sinon.match.func }));
+      sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+        entries: [
+          'package.json',
+          'node_modules',
+          'lib',
+          'routes',
+          'index.js',
+          'server.js'
+        ]
+      }));
+      done();
+    });
+
+    writeStream.emit('close');
+  });
+
+  it('includes only the "main" if no "files" specified', function (done) {
+    var main = 'server.js';
+    archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', { main: main }, function (err) {
+      assert.ifError(err);
+      sandbox.assert.neverCalledWith(tar.pack, sinon.match({ ignore: sinon.match.func }));
+      sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+        entries: [
+          'package.json',
+          'node_modules',
+          'server.js'
+        ]
+      }));
       done();
     });
 
