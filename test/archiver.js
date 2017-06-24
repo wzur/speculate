@@ -9,7 +9,7 @@ var sandbox = sinon.sandbox.create();
 
 var archiver = require('../lib/archiver');
 
-describe.only('archiver', function () {
+describe('archiver', function () {
   var writeStream;
   var readStream;
   var transformStream;

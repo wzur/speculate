@@ -8,7 +8,7 @@ var pkg = require('./fixtures/my-cool-api');
 var pkgWithWhitelist = require('./fixtures/my-cool-api-with-whitelist');
 var sandbox = sinon.sandbox.create();
 
-describe.only('generate', function () {
+describe('generate', function () {
   beforeEach(function () {
     sandbox.stub(fs, 'writeFileSync');
     sandbox.stub(fs, 'mkdirSync');
