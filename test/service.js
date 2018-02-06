@@ -34,4 +34,12 @@ describe('service', function () {
 
     assert.equal(service, expected);
   });
+
+  it('creates a service file from a scoped package.json', function () {
+      var pkg = require('./fixtures/my-scoped-cool-api');
+      var expected = loadFixture('my-scoped-cool-api.service');
+      var service = createServiceFile(pkg);
+
+      assert.equal(service, expected);
+  });
 });
