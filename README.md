@@ -118,7 +118,7 @@ If for some reason you need to package your dev dependencies with your productio
 ```json
 {
   "spec": {
-    "prune": false  
+    "prune": false
   }
 }
 ```
@@ -134,6 +134,35 @@ The systemd service file that Speculate generates uses the `npm start` script to
   }
 }
 ```
+
+### Including only certain files
+
+Similar to `npm`, if you specify a `files` directive in your `package.json` then `speculate` will only include those files or directories plus `package.json` and `node_modules` in the source tarball:
+
+```json
+{
+  "files": [
+    "lib",
+    "routes",
+    "index.js"
+  ]
+}
+```
+
+Alongside this, the `main` attribute is also included in the `files` listing, although the service is still started using `npm start`:
+
+```json
+{
+  "main": "server.js",
+  "files": [
+    "lib",
+    "routes",
+    "index.js"
+  ]
+}
+```
+
+If you have only a `main` directive, speculate will assume you are using it for its original purpose and not create an archive only including that one file.
 
 ### Node versions
 

@@ -1,13 +1,12 @@
 'use strict';
 
-const sinon = require('sinon');
+const pkg = require('./fixtures/my-cool-api');
+const pkgWithWhitelist = require('./fixtures/my-cool-api-with-whitelist');
+const sandbox = require('sinon').sandbox.create();
 const fs = require('fs');
 const assert = require('assert');
 const generate = require('../lib/generate');
 const archiver = require('../lib/archiver');
-
-const pkg = require('./fixtures/my-cool-api');
-const sandbox = sinon.sandbox.create();
 
 describe('generate', () => {
   beforeEach(() =>{
@@ -22,16 +21,16 @@ describe('generate', () => {
 
   it('creates the service file', async () => {
     await generate('/path/to/project', pkg, null, null);
-    sinon.assert.calledWith(
+    sandbox.assert.calledWith(
       fs.writeFileSync,
       '/path/to/project/my-cool-api.service',
-      sinon.match('SyslogIdentifier=my-cool-api')
+      sandbox.match('SyslogIdentifier=my-cool-api')
     );
   });
 
   it('creates directory for SPECS', async () => {
     await generate('/path/to/project', pkg, null, null);
-    sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SPECS');
+    sandbox.assert.calledWith(fs.mkdirSync, '/path/to/project/SPECS');
   });
 
   it('fails if it cannot create directory for SPECS', async () => {
@@ -48,16 +47,28 @@ describe('generate', () => {
 
   it('creates the spec file', async () => {
     await generate('/path/to/project', pkg, null, null);
-    sinon.assert.calledWith(
+    sandbox.assert.calledWith(
       fs.writeFileSync,
       '/path/to/project/SPECS/my-cool-api.spec',
-      sinon.match('%define name my-cool-api')
+      sandbox.match('%define name my-cool-api')
+    );
+  });
+
+  it('creates the sources archive', async () => {
+    await generate('/path/to/project', pkg, null, null);
+    sandbox.assert.calledWith(
+      archiver.compress,
+      '/path/to/project',
+      '/path/to/project/SOURCES/my-cool-api.tar.gz',
+      {
+        main: 'index.js'
+      }
     );
   });
 
   it('creates directory for SOURCES', async () => {
     await generate('/path/to/project', pkg, null, null);
-    sinon.assert.calledWith(fs.mkdirSync, '/path/to/project/SOURCES');
+    sandbox.assert.calledWith(fs.mkdirSync, '/path/to/project/SOURCES');
   });
 
   it('fails if it cannot create directory for SOURCES', async () => {
@@ -72,45 +83,65 @@ describe('generate', () => {
     assert.fail();
   });
 
-  it('creates the sources archive', async () => {
-    await generate('/path/to/project', pkg, null, null);
-    sinon.assert.calledWith(
-      archiver.compress,
-      '/path/to/project',
-      '/path/to/project/SOURCES/my-cool-api.tar.gz'
-    );
-  });
-
   it('creates the spec file with the correct release number', async () => {
     await generate('/path/to/project', pkg, 7, null);
-    sinon.assert.calledWith(
+    sandbox.assert.calledWith(
       fs.writeFileSync,
       '/path/to/project/SPECS/my-cool-api.spec',
-      sinon.match('%define release 7')
+      sandbox.match('%define release 7')
     );
   });
 
   it('creates the spec file with a custom name if specified', async () => {
     await generate('/path/to/project', pkg, 1, 'penguin');
-    sinon.assert.calledWith(
+    sandbox.assert.calledWith(
       fs.writeFileSync,
       '/path/to/project/SPECS/penguin.spec',
-      sinon.match('%define name penguin')
-    );
-  });
-
-  it('creates the service file with a custom name if specified', async () => {
-    await generate('/path/to/project', pkg, 1, 'penguin');
-    sinon.assert.calledWith(
-      fs.writeFileSync,
-      '/path/to/project/penguin.service',
-      sinon.match('SyslogIdentifier=penguin')
+      sandbox.match('%define name penguin')
     );
   });
 
   it('creates the sources archive with a custom name if specified', async () => {
     await generate('/path/to/project', pkg, null, 'penguin');
-    sinon.assert.calledWith(
+    sandbox.assert.calledWith(
+      archiver.compress,
+      '/path/to/project',
+      '/path/to/project/SOURCES/penguin.tar.gz',
+      {
+        main: 'index.js'
+      }
+    );
+  });
+
+  it('passes files and main values from the package.json to archiver', async () => {
+    await generate('/path/to/project', pkgWithWhitelist, null, null);
+    sandbox.assert.calledWith(
+      archiver.compress,
+      '/path/to/project',
+      '/path/to/project/SOURCES/my-cool-api.tar.gz',
+      {
+        main: 'server.js',
+        files: [
+          'lib',
+          'routes',
+          'index.js'
+        ]
+      }
+    );
+  });
+
+  it('creates the service file with a custom name if specified', async () => {
+    await generate('/path/to/project', pkg, 1, 'penguin');
+    sandbox.assert.calledWith(
+      fs.writeFileSync,
+      '/path/to/project/penguin.service',
+      sandbox.match('SyslogIdentifier=penguin')
+    );
+  });
+
+  it('creates the sources archive with a custom name if specified', async () => {
+    await generate('/path/to/project', pkg, null, 'penguin');
+    sandbox.assert.calledWith(
       archiver.compress,
       '/path/to/project',
       '/path/to/project/SOURCES/penguin.tar.gz'

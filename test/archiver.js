@@ -34,13 +34,13 @@ describe('archiver', () => {
   });
 
   it('creates a tar.gz archive', async () => {
-    const result = archiver.compress('tmp', 'tmp.tar.gz');
+    const result = archiver.compress('tmp', 'tmp.tar.gz', {});
     writeStream.emit('close');
     await result;
   });
 
   it('returns an error when the archive cannot be written', async () => {
-    const result = archiver.compress('tmp', 'tmp.tar.gz');
+    const result = archiver.compress('tmp', 'tmp.tar.gz', {});
     writeStream.emit('error', new Error('An error occured'));
 
     try {
@@ -52,7 +52,7 @@ describe('archiver', () => {
   });
 
   it('ignores build artifacts', async () => {
-    const result = archiver.compress('tmp', 'tmp.tar.gz');
+    const result = archiver.compress('tmp', 'tmp.tar.gz', {});
     writeStream.emit('close');
 
     await result;
@@ -67,12 +67,83 @@ describe('archiver', () => {
   });
 
   it('does not ignore all artifacts because of full path name', async () => {
-    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz');
+    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', {});
     writeStream.emit('close');
 
     await result;
 
     const ignore = tar.pack.getCall(0).args[1].ignore;
     assert.equal(ignore('/tmp/SOURCES/cake/real_file_here'), false);
+  });
+
+  it('archives files on a whitelist if specified alongside required files', async () => {
+    const files = [
+      'lib',
+      'routes',
+      'index.js'
+    ];
+    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', { files });
+    writeStream.emit('close');
+
+    await result;
+
+    sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+      entries: [
+        'package.json',
+        'node_modules',
+        'lib',
+        'routes',
+        'index.js'
+      ]
+    }));
+  });
+
+  it('does not include whitelist if none specified', async () => {
+    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', {});
+    writeStream.emit('close');
+
+    await result;
+
+    sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+      entries: undefined
+    }));
+  });
+
+  it('adds the "main" file to the archive alongside "files" if specified', async () => {
+    const main = 'server.js';
+    const files = [
+      'lib',
+      'routes',
+      'index.js'
+    ];
+    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', { main, files });
+    writeStream.emit('close');
+
+    await result;
+
+    sandbox.assert.neverCalledWith(tar.pack, sinon.match({ ignore: sinon.match.func }));
+    sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+      entries: [
+        'package.json',
+        'node_modules',
+        'server.js',
+        'lib',
+        'routes',
+        'index.js'
+      ]
+    }));
+  });
+
+  it('archives everything if only the "main" is specified', async () => {
+    const main = 'server.js';
+    const result = archiver.compress('/tmp/SOURCES', 'tmp.tar.gz', { main });
+    writeStream.emit('close');
+
+    await result;
+
+    sandbox.assert.neverCalledWith(tar.pack, sinon.match({ ignore: sinon.match.func }));
+    sandbox.assert.calledWith(tar.pack, '/tmp/SOURCES', sinon.match({
+      entries: undefined
+    }));
   });
 });
