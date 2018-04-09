@@ -37,11 +37,11 @@ describe('service', () => {
     assert.equal(service, expected);
   });
 
-  it('creates a service file from a scoped package.json', function () {
-      var pkg = require('./fixtures/my-scoped-cool-api');
-      var expected = loadFixture('my-scoped-cool-api.service');
-      var service = createServiceFile(pkg);
+  it('creates a service file from a scoped package.json', () => {
+    const pkg = require('./fixtures/my-scoped-cool-api');
+    const expected = loadFixture('my-scoped-cool-api.service');
+    const service = createServiceFile(pkg);
 
-      assert.equal(service, expected);
+    assert.equal(service, expected);
   });
 });

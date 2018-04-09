@@ -91,12 +91,11 @@ describe('spec', () => {
     assert.equal(spec, expected);
   });
 
-  it('creates a spec file from a scoped package.json', function () {
-      var pkg = require('./fixtures/my-scoped-cool-api');
-      var expected = loadFixture('my-scoped-cool-api.spec');
-      var spec = createSpecFile(pkg);
-
-      assert.equal(spec, expected);
+  it('creates a spec file from a scoped package.json', () => {
+    const pkg = require('./fixtures/my-scoped-cool-api');
+    const expected = loadFixture('my-scoped-cool-api.spec');
+    const spec = createSpecFile(pkg);
+    assert.equal(spec, expected);
   });
 
 });
